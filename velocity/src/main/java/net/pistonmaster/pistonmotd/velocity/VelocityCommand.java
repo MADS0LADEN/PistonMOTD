@@ -4,12 +4,11 @@ import com.velocitypowered.api.command.SimpleCommand;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
+import net.pistonmaster.pistonmotd.shared.PistonMOTDCommands;
+import net.pistonmaster.pistonmotd.shared.PistonMOTDCommands.Outcome;
 import net.pistonmaster.pistonmotd.shared.PistonMOTDPlugin;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 @RequiredArgsConstructor
 public class VelocityCommand implements SimpleCommand {
@@ -17,37 +16,47 @@ public class VelocityCommand implements SimpleCommand {
 
   @Override
   public void execute(Invocation invocation) {
-    if (((invocation.arguments().length > 0 && "help".equalsIgnoreCase(invocation.arguments()[0])) || invocation.arguments().length == 0) && invocation.source().hasPermission("pistonmotd.help")) {
-      invocation.source().sendMessage(Identity.nil(), Component.text("Commands:"));
-      invocation.source().sendMessage(Identity.nil(), Component.text("/pistonmotd help"));
-      invocation.source().sendMessage(Identity.nil(), Component.text("/pistonmotd reload"));
-    } else if (invocation.arguments().length > 0 && "reload".equalsIgnoreCase(invocation.arguments()[0]) && invocation.source().hasPermission("pistonmotd.reload")) {
-      plugin.loadConfig();
-      invocation.source().sendMessage(Identity.nil(), Component.text("Reloaded the config!"));
+    Outcome outcome = PistonMOTDCommands.execute(
+      plugin,
+      invocation.arguments(),
+      invocation.source().hasPermission(PistonMOTDCommands.PERM_HELP),
+      invocation.source().hasPermission(PistonMOTDCommands.PERM_RELOAD)
+    );
+
+    switch (outcome) {
+      case HELP:
+        invocation.source().sendMessage(Identity.nil(), Component.text("Commands:"));
+        invocation.source().sendMessage(Identity.nil(), Component.text("/pistonmotd help"));
+        invocation.source().sendMessage(Identity.nil(), Component.text("/pistonmotd reload"));
+        break;
+      case RELOADED:
+        invocation.source().sendMessage(Identity.nil(), Component.text("Reloaded the config!"));
+        break;
+      case RELOAD_FAILED:
+        invocation.source().sendMessage(Identity.nil(), Component.text("Failed to reload the config. Check the console for errors."));
+        break;
+      case NO_PERMISSION:
+        invocation.source().sendMessage(Identity.nil(), Component.text("You don't have permission to do that!"));
+        break;
+      case UNKNOWN:
+        break;
+      default:
+        break;
     }
   }
 
   @Override
   public List<String> suggest(Invocation invocation) {
-    String[] commands = {"reload", "help"};
-
-    List<String> completions = new ArrayList<>();
-
-    if (invocation.arguments().length == 1 && invocation.arguments()[0] != null) {
-      for (String string : commands) {
-        if (string.toLowerCase(Locale.ROOT).startsWith(invocation.arguments()[0].toLowerCase(Locale.ROOT))) {
-          completions.add(string);
-        }
-      }
-    }
-
-    Collections.sort(completions);
-
-    return completions;
+    return PistonMOTDCommands.tabComplete(
+      invocation.arguments(),
+      invocation.source().hasPermission(PistonMOTDCommands.PERM_HELP),
+      invocation.source().hasPermission(PistonMOTDCommands.PERM_RELOAD)
+    );
   }
 
   @Override
   public boolean hasPermission(Invocation invocation) {
-    return invocation.source().hasPermission("pistonmotd.reload") || invocation.source().hasPermission("pistonmotd.help");
+    return invocation.source().hasPermission(PistonMOTDCommands.PERM_RELOAD)
+      || invocation.source().hasPermission(PistonMOTDCommands.PERM_HELP);
   }
 }

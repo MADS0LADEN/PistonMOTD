@@ -22,6 +22,16 @@
 
 Compatible with external MOTD plugins. (Can't promise it will work with every MOTD plugin.)
 
+## Commands
+
+Reload config and favicons without restarting the server:
+
+- `/pistonmotd reload` (alias: `/pmotd reload`) on Bukkit, Bungee, Velocity, and Sponge
+- `/pistonmotdreload` (alias: `/pmotdreload`) on Paper/Spigot
+- Permission: `pistonmotd.reload` (default: op / console)
+
+`/pistonmotd help` lists commands (`pistonmotd.help`).
+
 ## 🌈 Community
 
 Feel free to join our Discord community server:
