@@ -53,7 +53,7 @@ public class PistonMOTDVelocity implements PistonMOTDPlatform {
     proxyServer.getEventManager().register(this, new PingEvent(new StatusPingHandler(plugin)));
 
     startup("Registering command");
-    proxyServer.getCommandManager().register("pistonmotd", new VelocityCommand(plugin), "pistonmotdv", "pistonmotdvelocity");
+    proxyServer.getCommandManager().register("pistonmotd", new VelocityCommand(plugin), "pistonmotdv", "pistonmotdvelocity", "pmotd");
 
     if (container.getDescription().getVersion().isPresent()) {
       plugin.checkUpdate();

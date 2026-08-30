@@ -63,8 +63,9 @@ public class PistonMOTDPlugin {
     platform.runAsync(this::loadFavicons, 5, 5, TimeUnit.SECONDS);
   }
 
-  public void loadConfig() {
+  public boolean loadConfig() {
     Path pluginConfigFile = platform.getPluginConfigFile();
+    boolean configLoaded = false;
 
     try {
       Path parent = pluginConfigFile.getParent();
@@ -84,6 +85,7 @@ public class PistonMOTDPlugin {
       );
 
       config.set(loadedConfig);
+      configLoaded = true;
     } catch (Exception e) {
       platform.error("Could not load config", e);
     }
@@ -97,7 +99,11 @@ public class PistonMOTDPlugin {
       platform.error("Could not create the icon directory!", e);
     }
 
-    loadFavicons();
+    if (configLoaded) {
+      loadFavicons();
+    }
+
+    return configLoaded;
   }
 
   public void registerCommonPlaceholder() {

@@ -9,7 +9,11 @@ commands:
   pistonmotd:
     description: Allows you to execute some commands for pistonmotd.
     permission: pistonmotd.command
-    aliases: [ "pistonmotdbukkit" ]
+    aliases: [ "pistonmotdbukkit", "pmotd" ]
+  pistonmotdreload:
+    description: Reload PistonMOTD config and favicons without restarting the server.
+    permission: pistonmotd.reload
+    aliases: [ "pmotdreload" ]
 
 permissions:
   pistonmotd.help:

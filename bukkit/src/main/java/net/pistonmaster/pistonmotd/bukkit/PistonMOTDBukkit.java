@@ -52,10 +52,13 @@ public class PistonMOTDBukkit extends JavaPlugin implements PistonMOTDPlatform {
     }
 
     startup("Registering command");
-    PluginCommand command = Objects.requireNonNull(getServer().getPluginCommand("pistonmotd"));
     BukkitCommand bukkitCommand = new BukkitCommand(plugin);
+    PluginCommand command = Objects.requireNonNull(getServer().getPluginCommand("pistonmotd"));
     command.setTabCompleter(bukkitCommand);
     command.setExecutor(bukkitCommand);
+
+    PluginCommand reloadCommand = Objects.requireNonNull(getServer().getPluginCommand("pistonmotdreload"));
+    reloadCommand.setExecutor(bukkitCommand);
 
     plugin.checkUpdate();
 
