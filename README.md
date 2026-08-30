@@ -22,6 +22,12 @@
 
 Compatible with external MOTD plugins. (Can't promise it will work with every MOTD plugin.)
 
+## Download
+
+Download **PistonMOTD.jar** from [Releases](https://github.com/MADS0LADEN/PistonMOTD/releases/latest/download/PistonMOTD.jar).
+
+That link is the plugin jar itself, not a zip. Put it in your server `plugins` folder, then run `/pistonmotd reload` (no full server restart needed for config).
+
 ## Commands
 
 Reload config and favicons without restarting the server:
